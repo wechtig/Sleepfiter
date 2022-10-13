@@ -1,5 +1,11 @@
 # Sleepfiter
 
+Man braucht:
+- Browser
+- Entwicklungsumgebung (Mit Intellij getestet)
+- Maven
+- Java (Mit Java 11 getestet)
+
 Zum Starten:
 
 1. git clone
