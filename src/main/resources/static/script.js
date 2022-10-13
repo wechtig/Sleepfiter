@@ -4,6 +4,7 @@ function testRequest()
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", url, false ); // false for synchronous request
     xmlHttp.send( null );
-    console.log("Daten vom Server:" + xmlHttp.responseText);
-    return xmlHttp.responseText;
+    var responseTestText = xmlHttp.responseText;
+    document.getElementById("testField").innerText = responseTestText;
+    return responseTestText;
 }
