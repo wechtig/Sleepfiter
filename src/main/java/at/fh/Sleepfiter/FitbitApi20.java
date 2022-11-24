@@ -26,7 +26,7 @@ public class FitbitApi20 extends DefaultApi20 {
         return "https://www.fitbit.com/oauth2/authorize";
     }
 
-    /*
+/*
     @Override
     public OAuth20Service createService(OAuthConfig config) {
         return new Fitbit20ServiceImpl(this, config);

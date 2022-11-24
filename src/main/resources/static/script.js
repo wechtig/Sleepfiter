@@ -1,6 +1,6 @@
 function testRequest()
 {
-    var url = "http://localhost:8080/monitoring/data"
+    var url = "http://localhost:9000/monitoring/data"
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", url, false ); // false for synchronous request
     xmlHttp.send( null );

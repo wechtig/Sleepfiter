@@ -9,8 +9,17 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.github.scribejava.core.oauth.OAuthService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
-import java.util.Scanner;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @SpringBootApplication
@@ -18,46 +27,21 @@ public class SleepfiterApplication {
 
 	final static String API_KEY = "238PNK";
 	final static String API_SECRET = "de61c651987739b72aa08aedaf774668";
+
+	// fitbit-mail:
+
+	final static String USER_ID = "B7RZY3";
 	private static final String PROTECTED_RESOURCE_URL = "https://api.fitbit.com/1/user/" + USER_ID + "/profile.json";
+
 	public static void main(String[] args) {
 		SpringApplication.run(SleepfiterApplication.class, args);
 
-		OAuth20Service service = new ServiceBuilder(API_KEY)
-				.apiSecret(API_SECRET)
-				.build(FitbitApi20.instance());
+		Map<String, String> vars = new HashMap<>();
+		vars.put("code", "8048a0405eeb361f80a98159713b9056ed113211");
+		vars.put("grant_type", "authorization_code");
 
-		final Scanner in = new Scanner(System.in);
-		final String authorizationUrl = service.getAuthorizationUrl();
-		final String code = in.nextLine();
-
-		try {
-			final OAuth2AccessToken accessToken = service.getAccessToken(code);
-			final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-			request.addHeader("x-li-format", "json");
-			request.addHeader("Authorization", "Bearer " + accessToken.getAccessToken());
-			final Response response = service.execute(request);
-			System.out.println();
-			System.out.println(response.getCode());
-			System.out.println(response.getBody());
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} catch (ExecutionException e) {
-			throw new RuntimeException(e);
-		}
-		/*OAuthRequest oAuthRequest = new OAuthRequest(Verb.GET, "/");
-
-		try {
-			var response = service.execute(oAuthRequest);
-			System.out.println("res: " + response.getBody());
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} catch (ExecutionException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}*/
+		RestTemplate restTemplate = new RestTemplate();
+		List<LinkedHashMap> emps = restTemplate.getForObject(PROTECTED_RESOURCE_URL, List.class, vars);
+		System.out.println(emps);
 	}
 }
