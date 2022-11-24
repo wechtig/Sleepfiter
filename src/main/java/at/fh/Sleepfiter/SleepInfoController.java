@@ -1,13 +1,16 @@
 package at.fh.Sleepfiter;
 
+import at.fh.Sleepfiter.entities.Sleep;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.*;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -20,10 +23,18 @@ public class SleepInfoController {
 
     private static final String PROTECTED_RESOURCE_URL = "https://api.fitbit.com/1/user/" + USER_ID + "/profile.json";
 
-    // fitbit-mail:
+
+    @Autowired
+    private SleepService sleepService;
 
     @GetMapping("/data")
-    public String getSleepData() {
+    public List<Sleep> getSleepData() {
+        var records = sleepService.readSleepRecords();
+        return records;
+    }
+
+    @GetMapping("/datatest")
+    public String getSleepDataTestApiConnect() {
 
         final OAuth20Service service = new ServiceBuilder(API_KEY)
                 .apiSecret(API_SECRET)
