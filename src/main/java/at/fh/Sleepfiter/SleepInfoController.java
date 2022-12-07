@@ -1,14 +1,19 @@
 package at.fh.Sleepfiter;
 
 import at.fh.Sleepfiter.entities.Sleep;
+import at.fh.Sleepfiter.services.ExcelService;
+import at.fh.Sleepfiter.services.SleepService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.*;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -25,12 +30,35 @@ public class SleepInfoController {
 
 
     @Autowired
+    private ExcelService excelService;
+
+    @Autowired
     private SleepService sleepService;
+
+    @PostConstruct
+    public void init() {
+        var records = excelService.readSleepRecords();
+        for(Sleep sleep : records) {
+            sleepService.save(sleep);
+        }
+    }
 
     @GetMapping("/data")
     public List<Sleep> getSleepData() {
-        var records = sleepService.readSleepRecords();
+        var records = sleepService.getAllData();
         return records;
+    }
+
+    @GetMapping("/names")
+    public List<String> getAllNames() {
+        var names = sleepService.getAllNames();
+        return names;
+    }
+
+    @GetMapping("/name/{name}")
+    public List<Sleep> getAllByPatientName(@PathVariable String name) {
+        var names = sleepService.findAllByPatientName(name);
+        return names;
     }
 
     @GetMapping("/datatest")

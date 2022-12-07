@@ -1,6 +1,8 @@
 package at.fh.Sleepfiter;
 
 import at.fh.Sleepfiter.entities.Sleep;
+import at.fh.Sleepfiter.services.ExcelService;
+import at.fh.Sleepfiter.services.SleepService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -8,6 +10,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.github.scribejava.core.oauth.OAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -44,6 +47,7 @@ public class SleepfiterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SleepfiterApplication.class, args);
 
+
 		if (USE_API) {
 			Map<String, String> vars = new HashMap<>();
 			vars.put("code", "8048a0405eeb361f80a98159713b9056ed113211");
@@ -52,6 +56,9 @@ public class SleepfiterApplication {
 			RestTemplate restTemplate = new RestTemplate();
 			List<LinkedHashMap> emps = restTemplate.getForObject(PROTECTED_RESOURCE_URL, List.class, vars);
 			System.out.println(emps);
+		} else {
+
+
 		}
 	}
 }

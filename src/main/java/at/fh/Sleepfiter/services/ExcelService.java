@@ -1,11 +1,10 @@
-package at.fh.Sleepfiter;
+package at.fh.Sleepfiter.services;
 
 import at.fh.Sleepfiter.entities.Sleep;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SleepService {
+public class ExcelService {
     private String file = "D://fitbit_export.csv";
 
     public List<Sleep> readSleepRecords() {

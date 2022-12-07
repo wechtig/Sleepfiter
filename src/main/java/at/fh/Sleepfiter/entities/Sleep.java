@@ -1,8 +1,18 @@
 package at.fh.Sleepfiter.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+@Entity
 public class Sleep {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    private String patientName;
     private String startTime;
     private String endTime;
     private int minutesSlept;
@@ -13,8 +23,9 @@ public class Sleep {
     private int deepSleep;
     private int lightSleep;
 
-    public Sleep(String startTime, String endTime, int minutesSlept, int minutesWakedUp,
+    public Sleep(String patientName, String startTime, String endTime, int minutesSlept, int minutesWakedUp,
                  int standUp, int timeInBed, int timeRem, int deepSleep, int lightSleep) {
+        this.patientName = patientName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.minutesSlept = minutesSlept;
@@ -28,6 +39,14 @@ public class Sleep {
 
     public Sleep() {
 
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
     }
 
     public String getStartTime() {
