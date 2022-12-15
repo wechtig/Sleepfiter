@@ -28,6 +28,8 @@ function loadByName(name) {
                 "            <th scope=\"col\">Minutes Slept</th>" +
                 "            <th scope=\"col\">Deep Sleep Time</th>" +
                 "            <th scope=\"col\">Light Sleep Time</th>" +
+                "            <th scope=\"col\">REM Time</th>" +
+                "            <th scope=\"col\">Waked Up</th>" +
 
                 "        </tr>" +
                 "    </thead>";
@@ -35,6 +37,8 @@ function loadByName(name) {
             var minutesSleptArray = [];
             var deepSleepArray = [];
             var day = [];
+            var sumLight = 0;
+            var sumDeep = 0;
 
             for (var i = 0; i < data.length; i++) {
 
@@ -50,14 +54,20 @@ function loadByName(name) {
                 table += "<td>" + data[i].minutesSlept + "</td>"
                 table += "<td>" + data[i].deepSleep + "</td>"
                 table += "<td>" + data[i].lightSleep + "</td>"
+                table += "<td>" + data[i].timeRem + "</td>"
+                table += "<td>" + data[i].minutesWakedUp + "</td>"
                 table += "</tr>";
 
                 minutesSleptArray.push(data[i].minutesSlept)
                 deepSleepArray.push(data[i].deepSleep)
                 day.push(i)
+
+                sumLight = sumLight + data[i].lightSleep;
+                sumDeep = sumDeep + data[i].deepSleep;
             }
 
            var ctx = document.getElementById("linechart");
+           var ctxPie = document.getElementById("piechart");
 
             const config = {
                 data: {
@@ -102,8 +112,25 @@ function loadByName(name) {
                     }]
                 }
             };
+            var barColors = [
+                "#b91d47",
+                "#00aba9",
+            ];
+
+            var configPie = {
+                data: {
+                    labels: ["Sumlight", "SumDeep"],
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: [sumLight, sumDeep]
+                    }]
+                }
+            }
 
             new Chart.Line(ctx, config);
+
+            new Chart.Doughnut(ctxPie, configPie);
+
 
             document.getElementById("overviewSum").innerHTML = "Tage mit zu wenig Schlaf: " + warning;
             document.getElementById("testField").innerHTML = table;
