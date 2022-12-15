@@ -32,6 +32,10 @@ function loadByName(name) {
                 "        </tr>" +
                 "    </thead>";
 
+            var minutesSleptArray = [];
+            var deepSleepArray = [];
+            var day = [];
+
             for (var i = 0; i < data.length; i++) {
 
                 if(data[i].minutesSlept < 350) {
@@ -47,26 +51,59 @@ function loadByName(name) {
                 table += "<td>" + data[i].deepSleep + "</td>"
                 table += "<td>" + data[i].lightSleep + "</td>"
                 table += "</tr>";
+
+                minutesSleptArray.push(data[i].minutesSlept)
+                deepSleepArray.push(data[i].deepSleep)
+                day.push(i)
             }
 
-            var chBarClasses = document.getElementById("lineChart");
+           var ctx = document.getElementById("linechart");
 
-            var chart1 = new Chart(chBarClasses, {
-                type: 'line',
-                data: data[4],
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Line Chart'
-                        }
-                    }
-                },
-            });
+            const config = {
+                data: {
+                    labels: day,
+                    datasets: [{
+                        label: "Sleep Time",
+                        data:minutesSleptArray,
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHitRadius: 10,
+
+                    },{
+                        label: "Deep Sleep Time",
+                        data:deepSleepArray,
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "red",
+                        borderColor: "red",
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBorderColor: "red",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "red",
+                        pointHoverBorderColor: "red",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHitRadius: 10,
+                    }]
+                }
+            };
+
+            new Chart.Line(ctx, config);
 
             document.getElementById("overviewSum").innerHTML = "Tage mit zu wenig Schlaf: " + warning;
             document.getElementById("testField").innerHTML = table;
