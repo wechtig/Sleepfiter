@@ -28,6 +28,10 @@ public class SleepInfoController {
 
     private static final String PROTECTED_RESOURCE_URL = "https://api.fitbit.com/1/user/" + USER_ID + "/profile.json";
 
+    private String fileFranz = "D://fitbit_export_franz.csv";
+    private String fileMax = "D://fitbit_export_max.csv";
+    private String fileSissi = "D://fitbit_export_sissi.csv";
+
 
     @Autowired
     private ExcelService excelService;
@@ -37,10 +41,23 @@ public class SleepInfoController {
 
     @PostConstruct
     public void init() {
-        var records = excelService.readSleepRecords();
+        // excel import 1
+     /*   var records = excelService.readSleepRecords(fileFranz, "Franz");
         for(Sleep sleep : records) {
             sleepService.save(sleep);
         }
+
+        // excel import 1
+        records = excelService.readSleepRecords(fileMax, "Max");
+        for(Sleep sleep : records) {
+            sleepService.save(sleep);
+        }
+
+        // excel import 1
+        records = excelService.readSleepRecords(fileSissi, "Sissi");
+        for(Sleep sleep : records) {
+            sleepService.save(sleep);
+        }*/
     }
 
     @GetMapping("/data")
@@ -57,6 +74,9 @@ public class SleepInfoController {
 
     @GetMapping("/name/{name}")
     public List<Sleep> getAllByPatientName(@PathVariable String name) {
+        if(name.equals("Station")) {
+            return sleepService.getAllData();
+        }
         var names = sleepService.findAllByPatientName(name);
         return names;
     }

@@ -13,9 +13,8 @@ import java.util.List;
 
 @Service
 public class ExcelService {
-    private String file = "D://fitbit_export.csv";
 
-    public List<Sleep> readSleepRecords() {
+    public List<Sleep> readSleepRecords(final String file, final String name) {
         List<Sleep> sleepRecords = new ArrayList<>();
         Path pathToFile = Paths.get(file);
 
@@ -31,7 +30,7 @@ public class ExcelService {
                 }
 
                 if (readSleep && !attributes[0].equals("Startzeit")) {
-                    Sleep record = createSleepRecord(attributes);
+                    Sleep record = createSleepRecord(attributes, name);
                     sleepRecords.add(record);
                 }
 
@@ -50,7 +49,7 @@ public class ExcelService {
     }
 
 
-    private static Sleep createSleepRecord(String[] metadata) {
+    private static Sleep createSleepRecord(String[] metadata, String name) {
         Sleep sleep = new Sleep();
         sleep.setStartTime(metadata[0].replace("\"", ""));
         sleep.setEndTime(metadata[1].replace("\"", ""));
@@ -61,6 +60,7 @@ public class ExcelService {
         sleep.setTimeRem(Integer.parseInt(metadata[6].replace("\"", "")));
         sleep.setDeepSleep(Integer.parseInt(metadata[7].replace("\"", "")));
         sleep.setLightSleep(Integer.parseInt(metadata[8].replace("\"", "")));
+        sleep.setPatientName(name);
         return sleep;
     }
 
